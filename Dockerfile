@@ -12,7 +12,7 @@ ENV CONFIG=config.*.hcl
 ENV REST=:8025
 ENV DRIVER=mssql
 ENV WORKERS=4
-COPY config/config.example.hcl /app/config.example.hcl
+COPY config.example.hcl /app/config.example.hcl
 
 COPY entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
