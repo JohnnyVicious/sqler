@@ -11,7 +11,7 @@ ENV DBHOST=mssql
 ENV DBPORT=1433
 ENV DBNAME=yourdbname
 
-#ENTRYPOINT ["sqler -driver=$DRIVER -dsn=$USER:$PASS@tcp($DBHOST:$DBPORT)/$DBNAME"]
+#ENTRYPOINT ["sqler"]
 
 EXPOSE 8025:8025
 CMD [ "sh", "-c", "sh sqler -driver=$DRIVER -dsn=$USER:$PASS@tcp($DBHOST:$DBPORT)" ]
