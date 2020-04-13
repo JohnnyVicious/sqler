@@ -12,8 +12,6 @@ _boot {
 	        [GITHUB_REPO] [varchar](max) NOT NULL,
 	        [GITHUB_PROJ] [varchar](max) NOT NULL
         ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-
-        GO
     SQL
 }
 
@@ -81,7 +79,6 @@ tables {
     include = ["_boot"]
     exec = <<SQL
         SELECT * FROM INFORMATION_SCHEMA.TABLES;
-        GO
     SQL
 
     transformer = <<SQL
