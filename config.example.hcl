@@ -4,9 +4,9 @@
 _boot {
     // the query we want to execute
     exec = <<SQL
-        IF NOT EXISTS (select * from sysobjects where name='github' and xtype='U')
+        IF NOT EXISTS (select * from sysobjects where name='github2' and xtype='U')
 
-        CREATE TABLE [dbo].[github](
+        CREATE TABLE [dbo].[github2](
 	        [GITHUB_USER] [varchar](max) NOT NULL,
 	        [GITHUB_TOKEN] [varchar](max) NOT NULL,
 	        [GITHUB_REPO] [varchar](max) NOT NULL,
