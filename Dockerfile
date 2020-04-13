@@ -20,6 +20,6 @@ RUN chmod +x /app/entrypoint.sh
 EXPOSE 8025
 ENV PATH=$PATH:/usr/local/bin
 
-WORKDIR /root/
+WORKDIR /app
 
 ENTRYPOINT ["./entrypoint.sh"]
