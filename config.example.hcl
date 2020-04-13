@@ -4,13 +4,15 @@
 _boot {
     // the query we want to execute
     exec = <<SQL
-        CREATE TABLE IF NOT EXISTS datax (
-            ID INT PRIMARY KEY,
-            data TEXT DEFAULT NULL
+        CREATE TABLE IF NOT EXISTS `users` (
+            `ID` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            `name` VARCHAR(30) DEFAULT "@anonymous",
+            `email` VARCHAR(30) DEFAULT "@anonymous",
+            `password` VARCHAR(200) DEFAULT "",
+            `time` INT UNSIGNED
         );
     SQL
 }
-
 addpost {
     include = ["_boot"]
     methods = ["POST"]
