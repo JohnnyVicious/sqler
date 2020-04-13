@@ -14,6 +14,6 @@ ENV DBNAME=yourdbname
 #ENTRYPOINT ["sqler -driver=$DRIVER -dsn=$USER:$PASS@tcp($DBHOST:$DBPORT)/$DBNAME"]
 
 EXPOSE 8025:8025
-CMD [ "sh", "-c", "sh startup sqler -driver=$DRIVER -dsn=$USER:$PASS@tcp($DBHOST:$DBPORT)/$DBNAME" ]
+CMD [ "sh", "-c", "sh startup sqler -driver=$DRIVER -dsn=$USER:$PASS@tcp($DBHOST:$DBPORT)" ]
 
 WORKDIR /root/
