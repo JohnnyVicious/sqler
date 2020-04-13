@@ -4,35 +4,16 @@
 _boot {
     // the query we want to execute
     exec = <<SQL
-        CREATE TABLE IF NOT EXISTS `users` (
-            `ID` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-            `name` VARCHAR(30) DEFAULT "@anonymous",
-            `email` VARCHAR(30) DEFAULT "@anonymous",
-            `password` VARCHAR(200) DEFAULT "",
-            `time` INT UNSIGNED
-        );
-    SQL
-}
-addpost {
-    include = ["_boot"]
-    methods = ["POST"]
+        IF NOT EXISTS (select * from sysobjects where name='github' and xtype='U')
 
-    // validators {
-    //     title_is_empty = "$input.title && $input.title.trim().length > 0"
-    //     content_is_empty = "$input.content"
-    // }
+        CREATE TABLE [dbo].[github](
+	        [GITHUB_USER] [varchar](max) NOT NULL,
+	        [GITHUB_TOKEN] [varchar](max) NOT NULL,
+	        [GITHUB_REPO] [varchar](max) NOT NULL,
+	        [GITHUB_PROJ] [varchar](max) NOT NULL
+        ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 
-    bind {
-        data = <<JS
-            JSON.stringify({
-                "title": $input.title,
-                "content": $input.content
-            })
-        JS
-    }
-
-    exec = <<SQL
-        INSERT INTO datax(ID, data) VALUES(default, :data) RETURNING id, data;
+        GO
     SQL
 }
 
@@ -81,7 +62,7 @@ adduser {
 
 // list all databases, and run a transformer function
 databases {
-    // include = ["_boot"]
+    include = ["_boot"]
     exec = "SHOW DATABASES"
     transformer = <<JS
         (function(){
@@ -97,7 +78,12 @@ databases {
 
 // list all tables from all databases
 tables {
-    exec = "SELECT `table_name` as `table`, `table_schema` as `database` FROM INFORMATION_SCHEMA.tables"
+    include = ["_boot"]
+    exec = <<SQL
+        SELECT * FROM INFORMATION_SCHEMA.TABLES;
+        GO
+    SQL
+
     transformer = <<SQL
         (function(){
             $ret = []
@@ -112,35 +98,3 @@ tables {
     SQL
 }
 
-data {
-    bind {
-        limit = 2
-        field = "'id'"
-    }
-    
-    exec = "SELECT id FROM data limit 5"
-}
-
-// a macro that aggregates `databases` macro and `tables` macro into one macro
-databases_tables {
-    aggregate = ["databases", "tables"]
-}
-
-_sqlite_tables {
-    exec = <<SQL
-    SELECT 
-        name
-    FROM 
-        sqlite_master 
-    WHERE 
-        type ='table' AND 
-        name NOT LIKE 'sqlite_%';
-    SQL
-
-
-    cron = "* * * * *"
-
-    trigger {
-        webhook = "https://en09y7gttbxyos.x.pipedream.net"
-    }
-}
