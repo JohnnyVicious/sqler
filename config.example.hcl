@@ -80,18 +80,5 @@ tables {
     exec = <<SQL
         SELECT * FROM INFORMATION_SCHEMA.TABLES;
     SQL
-
-    transformer = <<SQL
-        (function(){
-            $ret = []
-            for ( i in $result ){
-                $ret.push({
-                    table: $result[i].table,
-                    database: $result[i].database,
-                })
-            }
-            return $ret
-        })()
-    SQL
 }
 
