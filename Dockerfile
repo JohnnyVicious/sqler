@@ -6,11 +6,11 @@ RUN apk add --no-cache git gcc musl-dev
 
 RUN CGO_ENABLED=1 go get --tags "linux sqlite_stat4 sqlite_allow_uri_authority sqlite_fts5 sqlite_introspect sqlite_json" github.com/alash3al/sqler
 
-ENV DSN="odbc:server=mssql;user id=sqler;database=mydatabase;app name=myappname"
+ENV DSN="sqlserver://sqler:gMI7Lf0z8mFYd1SV8vboA834d@mssql"
 ENV RESP=:3678
 ENV CONFIG=config.*.hcl
 ENV REST=:8025
-ENV DRIVER=mssql
+ENV DRIVER=sqlserver
 ENV WORKERS=4
 COPY config.*.hcl /app/
 
