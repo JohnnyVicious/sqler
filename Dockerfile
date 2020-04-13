@@ -11,6 +11,9 @@ ENV DBHOST=mssql
 ENV DBPORT=1433
 ENV DBNAME=yourdbname
 
-ENTRYPOINT ["sqler -driver=$DRIVER -dsn=$USER:$PASS@tcp($DBHOST:$DBPORT)/$DBNAME"]
+#ENTRYPOINT ["sqler -driver=$DRIVER -dsn=$USER:$PASS@tcp($DBHOST:$DBPORT)/$DBNAME"]
+
+EXPOSE 8025:8025
+CMD [ "sh", "-c", "sh startup sqler -driver=$DRIVER -dsn=$USER:$PASS@tcp($DBHOST:$DBPORT)/$DBNAME" ]
 
 WORKDIR /root/
