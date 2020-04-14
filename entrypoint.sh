@@ -1,7 +1,7 @@
 #!/bin/sh
 ls -l
 
-FILE=./sqler
+FOLDER=./sqler
 if [ -d "$FOLDER" ]; then
     echo "Folder $FOLDER exist, removing folder"
     rm -rf ./sqler
