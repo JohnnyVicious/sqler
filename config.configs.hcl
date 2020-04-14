@@ -34,7 +34,7 @@ configfrombotid {
     //methods = ["GET"]
 
     // include some macros we declared before
-    include = ["_boot"]
+    // include = ["_boot"]
 
     exec = <<SQL
           SELECT TOP 1 * FROM configs WHERE CONFIG_BOTID = :botid;

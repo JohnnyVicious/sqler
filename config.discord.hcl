@@ -34,7 +34,7 @@ getdiscordhook {
     //methods = ["GET"]
 
     // include some macros we declared before
-    include = ["_boot"]
+    // include = ["_boot"]
 
     exec = <<SQL
           SELECT * FROM discord WHERE DISCORD_EXCHANGE=:exchange AND DISCORD_DEMO=:demo;
