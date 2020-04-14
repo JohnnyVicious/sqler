@@ -41,3 +41,22 @@ configfrombotid {
     	SQL
 }
 
+configfromsometimeago {
+    //validators {
+    //    botid_is_not_empty = "$input.botid && $input.botid.trim().length > 0"
+    //}
+
+    bind {
+        sometimeago = "$input.sometimeago"
+    }
+
+    methods = ["POST"]
+    //methods = ["GET"]
+
+    // include some macros we declared before
+    // include = ["_boot"]
+
+    exec = <<SQL
+          SELECT TOP 1 * FROM configs WHERE CONFIG_HEARTBEAT < :sometimeago OR CONFIG_HEARTBEAT IS NULL;
+    	SQL
+}
