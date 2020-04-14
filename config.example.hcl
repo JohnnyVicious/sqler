@@ -38,6 +38,26 @@ configfrombotid {
     	SQL
 }
 
+somequery {
+    //validators {
+    //    botid_is_not_empty = "$input.botid && $input.botid.trim().length > 0"
+    //}
+
+    bind {
+        myquery = "$input.myquery"
+    }
+
+    methods = ["POST"]
+    //methods = ["GET"]
+
+    // include some macros we declared before
+    include = ["_boot"]
+
+    exec = <<SQL
+          :myquery;
+    	SQL
+}
+
 // list all tables from all databases
 tables {
     include = ["_boot"]
