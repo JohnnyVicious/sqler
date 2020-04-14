@@ -27,7 +27,7 @@ getdiscordhook {
 
     bind {
         exchange = "$input.exchange"
-        demo = $input.demo
+        demo = "$input.demo"
     }
 
     methods = ["POST"]
