@@ -18,22 +18,22 @@ _boot {
 // adduser macro/endpoint, just hit `/adduser` with
 // a `?user_name=&user_email=` or json `POST` request
 // with the same fields.
-somequery {
+configfrombotid {
     validators {
-        myquery_is_not_empty = "$input.myquery && $input.myquery.trim().length > 0"
+        botid_is_not_empty = "$input.botid && $input.botid.trim().length > 0"
     }
 
     bind {
-        myquery = "$input.myquery"
+        botid = "$input.botid"
     }
 
     methods = ["POST"]
     //methods = ["GET"]
 
     // include some macros we declared before
-    // include = ["_boot"]
+    include = ["_boot"]
 
-    exec = ":myquery"
+    exec = "SELECT TOP 1 * FROM configs WHERE CONFIG_BOTID = ':botid'"
 }
 
 // list all tables from all databases
