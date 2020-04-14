@@ -60,3 +60,25 @@ configfromsometimeago {
           SELECT TOP 1 * FROM configs WHERE CONFIG_HEARTBEAT < :sometimeago OR CONFIG_HEARTBEAT IS NULL;
     	SQL
 }
+
+writeheartbeat {
+    //validators {
+    //    botid_is_not_empty = "$input.botid && $input.botid.trim().length > 0"
+    //}
+
+    bind {
+        heartbeattime = "$input.heartbeattime"
+        botid = "$input.botid"
+        confignum = "$input.confignum"
+    }
+
+    methods = ["POST"]
+    //methods = ["GET"]
+
+    // include some macros we declared before
+    // include = ["_boot"]
+
+    exec = <<SQL
+          UPDATE dbo.configs SET CONFIG_HEARTBEAT = :heartbeattime , CONFIG_BOTID = :botid FROM dbo.configs WHERE CONFIG_NUM = :confignum;
+    	SQL
+}
