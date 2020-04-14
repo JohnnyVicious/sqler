@@ -19,19 +19,20 @@ _boot {
 // a `?user_name=&user_email=` or json `POST` request
 // with the same fields.
 somequery {
-    validators {
-        somequery_is_not_empty = "$input.somequery && $input.somequery.trim().length > 0"
-    }
+    //validators {
+    //    somequery_is_not_empty = "$input.somequery && $input.somequery.trim().length > 0"
+    //}
 
-    bind {
-        somequery = "$input.somequery"
-    }
+    //bind {
+    //    somequery = "$input.somequery"
+    //}
 
-    methods = ["POST"]    
+    // methods = ["POST"]
+    methods = ["GET"]
 
     // include some macros we declared before
     // include = ["_boot"]
 
-    exec = "somequery"
+    exec = "SELECT TOP 1 * FROM configs"
 }
 
