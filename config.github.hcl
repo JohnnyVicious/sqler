@@ -23,13 +23,17 @@ getgithubuser {
     //    botid_is_not_empty = "$input.botid && $input.botid.trim().length > 0"
     //}
 
-    //methods = ["POST"]
-    methods = ["GET"]
+    bind {
+        projectname = "$input.projectname"
+    }    
+
+    methods = ["POST"]
+    //methods = ["GET"]
 
     // include some macros we declared before
     // include = ["_boot"]
 
     exec = <<SQL
-          SELECT * FROM github WHERE GITHUB_PROJ='TradeBot';
+          SELECT * FROM github WHERE GITHUB_PROJ=:projectname;
     	SQL
 }
