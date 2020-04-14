@@ -34,5 +34,13 @@ somequery {
     // include = ["_boot"]
 
     exec = "SELECT TOP 1 * FROM configs"
+
+    transformer = <<JS
+        // there is a global variable called `$result`,
+        // `$result` holds the result of the sql execution.
+        (function(){
+            return $input.somequery
+        })()
+    JS
 }
 
