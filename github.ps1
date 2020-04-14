@@ -55,32 +55,19 @@ try {
 
             if ($PUSH) {                                  
                 # If pushing from local source is enabled
-                if ($demo) {
-                    # dev branch
-                    Write-Output "(Running on DEV branch)"
-                    git checkout dev  
-                    #git fetch $githubrepo dev     
-                }
-                else {
-                    # master branch
-                    git checkout master        
-                    #git fetch $githubrepo master
-                }
+                # master branch
+                git checkout master        
+                #git fetch $githubrepo master
 
                 Write-Output "Performing GIT PUSH..."
                 git add .
                 git commit -m "$(New-Guid) ($(Get-Date -Format "yyyyMMdd HH:mm"))"
                 git push $githubrepo
-            } else {                
-                if ($demo) { 
-                    Write-Output "Checking for updates on DEV branch..."
-                    git checkout dev
-                    git pull $githubrepo dev
-                } else {
-                    Write-Output "Checking for updates..."
-                    git checkout master
-                    git pull $githubrepo master
-                }                
+            }
+            else {                
+                Write-Output "Checking for updates..."
+                git checkout master
+                git pull $githubrepo master
             }
             if ((Get-Location).Path -match $githubproject) { cd.. }
         }
@@ -90,7 +77,6 @@ try {
             cd $githubproject
             git config --global user.email "you@example.com"
             git config --global user.name "PowerShell Script"            
-            if ($demo) { git checkout dev }
         }
         
     }
