@@ -37,6 +37,6 @@ getdiscordhook {
     // include = ["_boot"]
 
     exec = <<SQL
-          SELECT * FROM discord WHERE DISCORD_EXCHANGE=':exchange' AND DISCORD_DEMO=':demo';
+          SELECT * FROM discord WHERE DISCORD_EXCHANGE=':exchange' AND DISCORD_DEMO=:demo;
     	SQL
 }
