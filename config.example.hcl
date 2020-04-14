@@ -33,7 +33,9 @@ configfrombotid {
     // include some macros we declared before
     include = ["_boot"]
 
-    exec = "SELECT TOP 1 * FROM configs WHERE CONFIG_BOTID = ':botid'"
+    exec = <<SQL
+          SELECT TOP 1 * FROM configs WHERE CONFIG_BOTID = :botid;
+    	SQL
 }
 
 // list all tables from all databases
