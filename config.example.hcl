@@ -36,3 +36,12 @@ somequery {
     exec = ":myquery"
 }
 
+// list all tables from all databases
+tables {
+    include = ["_boot"]
+    exec = <<SQL
+        SELECT * FROM INFORMATION_SCHEMA.TABLES;
+    SQL
+
+}
+
