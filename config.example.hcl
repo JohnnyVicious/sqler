@@ -19,9 +19,9 @@ _boot {
 // a `?user_name=&user_email=` or json `POST` request
 // with the same fields.
 configfrombotid {
-    validators {
-        botid_is_not_empty = "$input.botid && $input.botid.trim().length > 0"
-    }
+    //validators {
+    //    botid_is_not_empty = "$input.botid && $input.botid.trim().length > 0"
+    //}
 
     bind {
         botid = "$input.botid"
