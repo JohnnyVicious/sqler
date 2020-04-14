@@ -20,11 +20,11 @@ _boot {
 // with the same fields.
 somequery {
     validators {
-        somequery_is_not_empty = "$input.somequery && $input.somequery.trim().length > 0"
+        myquery_is_not_empty = "$input.myquery && $input.myquery.trim().length > 0"
     }
 
     bind {
-        somequery = "$input.somequery"
+        myquery = "$input.myquery"
     }
 
     methods = ["POST"]
@@ -33,14 +33,6 @@ somequery {
     // include some macros we declared before
     // include = ["_boot"]
 
-    exec = "SELECT TOP 1 * FROM configs"
-
-    transformer = <<JS
-        // there is a global variable called `$result`,
-        // `$result` holds the result of the sql execution.
-        (function(){
-            return $input.somequery
-        })()
-    JS
+    exec = ":myquery"
 }
 
