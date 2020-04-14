@@ -10,7 +10,6 @@ fi
 git clone https://github.com/JohnnyVicious/sqler.git
 
 cp -f ./sqler/config.*.hcl /app/
-cp -f ./sqler/entrypoint*.sh /app/
 
 ls -l
 
