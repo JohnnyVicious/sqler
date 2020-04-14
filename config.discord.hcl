@@ -38,6 +38,6 @@ getdiscordhook {
     //  AND DISCORD_DEMO=:demo
 
     exec = <<SQL
-          SELECT * FROM discord WHERE DISCORD_EXCHANGE=:exchange;
+          SELECT * FROM discord WHERE DISCORD_EXCHANGE=':exchange';
     	SQL
 }
