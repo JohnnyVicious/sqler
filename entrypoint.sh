@@ -3,11 +3,12 @@ ls -l
 
 MYFOLDER=./sqler
 if [ -d "$MYFOLDER" ]; then
-    echo "Folder $MYFOLDER exist, removing folder"
-    rm -rf ./sqler
+    echo "Folder $MYFOLDER exist, git pull for updates"
+    git pull https://github.com/JohnnyVicious/sqler.git
+else
+    echo "Folder $MYFOLDER does not exist, git clone for the first time"
+    git clone https://github.com/JohnnyVicious/sqler.git
 fi
-
-git clone https://github.com/JohnnyVicious/sqler.git
 
 cp -f ./sqler/config.*.hcl /app/
 
