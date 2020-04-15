@@ -19,13 +19,14 @@ SQL
 // adduser macro/endpoint, just hit `/adduser` with
 // a `?user_name=&user_email=` or json `POST` request
 // with the same fields.
-configfrombotid {
+
+exchangeconfigfromname {
     //validators {
     //    botid_is_not_empty = "$input.botid && $input.botid.trim().length > 0"
     //}
 
     bind {
-        botid = "$input.botid"
+        exchangename = "$input.exchangename"
     }
 
     methods = ["POST"]
@@ -35,6 +36,6 @@ configfrombotid {
     // include = ["_boot"]
 
     exec = <<SQL
-          SELECT TOP 1 * FROM configs WHERE CONFIG_BOTID = :botid;
+          SELECT TOP 1 * FROM configs WHERE EXCHANGE_NAME = :exchangename;
     	SQL
 }
