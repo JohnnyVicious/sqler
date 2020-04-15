@@ -36,6 +36,6 @@ exchangeconfigfromname {
     // include = ["_boot"]
 
     exec = <<SQL
-          SELECT TOP 1 * FROM configs WHERE EXCHANGE_NAME = :exchangename;
+          SELECT TOP 1 * FROM configs WHERE EXCHANGE_NAME = :exchangename AND EXCHANGE_ENABLED = 1;
     	SQL
 }
