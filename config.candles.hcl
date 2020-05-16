@@ -39,9 +39,10 @@ getallcandles {
 
     // include some macros we declared before
     // include = ["_boot"]
+    // SELECT TOP :limit * FROM candles WHERE CANDLE_EXCHANGE = :exchange AND CANDLE_PAIR = :pair AND CANDLE_PERIOD = :period AND CANDLE_TYPE = :type ORDER BY CANDLE_TIMESTAMP DESC;
 
     exec = <<SQL
-          SELECT TOP :limit * FROM candles WHERE CANDLE_EXCHANGE = :exchange AND CANDLE_PAIR = :pair AND CANDLE_PERIOD = :period AND CANDLE_TYPE = :type ORDER BY CANDLE_TIMESTAMP DESC;
+          SELECT * FROM candles;
     	SQL
 }
 
