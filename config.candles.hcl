@@ -42,7 +42,7 @@ getallcandles {
     // SELECT TOP :limit * FROM candles WHERE CANDLE_EXCHANGE = :exchange AND CANDLE_PAIR = :pair AND CANDLE_PERIOD = :period AND CANDLE_TYPE = :type ORDER BY CANDLE_TIMESTAMP DESC;
 
     exec = <<SQL
-          SELECT * FROM candles;
+          SELECT TOP :limit * FROM candles ;
     	SQL
 }
 
