@@ -95,6 +95,12 @@ updatecandle {
 
     exec = <<SQL
         IF EXISTS (SELECT * FROM candles WHERE CANDLE_EXCHANGE = :exchange AND CANDLE_PAIR = :pair AND CANDLE_PERIOD = :period AND CANDLE_TYPE = :type AND CANDLE_TIMESTAMP = :timestamp)
+        BEGIN
         UPDATE dbo.candles SET CANDLE_JSON = :jsondata FROM dbo.candles WHERE CANDLE_EXCHANGE = :exchange AND CANDLE_PAIR = :pair AND CANDLE_PERIOD = :period AND CANDLE_TYPE = :type AND CANDLE_TIMESTAMP = :timestamp;
+        END
+        ELSE
+        BEGIN
+        INSERT [dbo].[candles] ([CANDLE_EXCHANGE], [CANDLE_TYPE], [CANDLE_PAIR], [CANDLE_PERIOD], [CANDLE_TIMESTAMP], [CANDLE_JSON]) VALUES (:exchange, :type, :pair, :period, :timestamp, :jsondata);
+        END        
     	SQL
 }
