@@ -67,6 +67,6 @@ writecandle {
     // include = ["_boot"]
 
     exec = <<SQL
-          INSERT [dbo].[accounts] ([CANDLE_EXCHANGE], [CANDLE_TYPE], [CANDLE_PAIR], [CANDLE_PERIOD], [CANDLE_TIMESTAMP], [CANDLE_JSON]) VALUES (:exchange, :type, :pair, :period, :timestamp, :jsondata);
+          INSERT [dbo].[candles] ([CANDLE_EXCHANGE], [CANDLE_TYPE], [CANDLE_PAIR], [CANDLE_PERIOD], [CANDLE_TIMESTAMP], [CANDLE_JSON]) VALUES (:exchange, :type, :pair, :period, :timestamp, :jsondata);
     	SQL
 }
