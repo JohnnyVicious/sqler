@@ -4,24 +4,35 @@
 _boot {
     // the query we want to execute
     exec = <<SQL
-        IF NOT EXISTS (select * from sysobjects where name='candles' and xtype='U')
+        IF NOT EXISTS (select * from sysobjects where name='indicators' and xtype='U')
 
-    CREATE TABLE candles(
-	    CANDLE_NUM bigint NOT NULL IDENTITY PRIMARY KEY,
-	    CANDLE_EXCHANGE [varchar](32) NOT NULL,
-	    CANDLE_TYPE [varchar](32) NOT NULL,
-	    CANDLE_PAIR [varchar](32) NOT NULL,
-	    CANDLE_PERIOD smallint NOT NULL,
-	    CANDLE_TIMESTAMP bigint NOT NULL,
-	    CANDLE_JSON [varchar](max) NOT NULL
-    ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+        CREATE TABLE [dbo].[indicators](
+	    [INDICATOR_EXCHANGE] [varchar](32) NOT NULL,
+	    [INDICATOR_TYPE] [varchar](32) NOT NULL,
+	    [INDICATOR_PAIR] [varchar](32) NOT NULL,
+	    [INDICATOR_PERIOD] [smallint] NOT NULL,
+	    [INDICATOR_TIMESTAMP] [bigint] NOT NULL,
+	    [INDICATOR_NAME] [varchar](32) NOT NULL,
+	    [INDICATOR_VERSION] [smallint] NOT NULL,
+	    [INDICATOR_JSON] [varchar](max) NOT NULL,
+        CONSTRAINT [PK_indicators] PRIMARY KEY CLUSTERED 
+        (
+	        [INDICATOR_EXCHANGE] ASC,
+	        [INDICATOR_PAIR] ASC,
+	        [INDICATOR_PERIOD] ASC,
+	        [INDICATOR_TIMESTAMP] ASC,
+        	[INDICATOR_TYPE] ASC,
+	        [INDICATOR_NAME] ASC,
+	        [INDICATOR_VERSION] ASC
+        )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+        ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]    
     SQL
 }
 
 // adduser macro/endpoint, just hit `/adduser` with
 // a `?user_name=&user_email=` or json `POST` request
 // with the same fields.
-getallcandles {
+getallindicators {
     //validators {
     //    botid_is_not_empty = "$input.botid && $input.botid.trim().length > 0"
     //}
@@ -31,7 +42,8 @@ getallcandles {
         type = "$input.type"
         pair = "$input.pair"
         period = "$input.period"
-        limit = "$input.limit"
+        name = "$input.name"
+        version = "$input.version"
     }
 
     methods = ["POST"]
@@ -39,15 +51,14 @@ getallcandles {
 
     // include some macros we declared before
     // include = ["_boot"]
-    // SELECT TOP :limit * FROM candles WHERE CANDLE_EXCHANGE = :exchange AND CANDLE_PAIR = :pair AND CANDLE_PERIOD = :period AND CANDLE_TYPE = :type ORDER BY CANDLE_TIMESTAMP DESC;
 
     exec = <<SQL
-          SELECT * FROM candles WHERE CANDLE_EXCHANGE = :exchange AND CANDLE_PAIR = :pair AND CANDLE_PERIOD = :period AND CANDLE_TYPE = :type ORDER BY CANDLE_TIMESTAMP DESC;
+          SELECT * FROM indicators WHERE INDICATOR_EXCHANGE = :exchange AND INDICATOR_PAIR = :pair AND INDICATOR_PERIOD = :period AND INDICATOR_TYPE = :type AND INDICATOR_NAME = :name AND INDICATOR_VERSION = :version ORDER BY INDICATOR_TIMESTAMP DESC;
     	SQL
 }
 
 
-writecandle {
+writeindicator {
     //validators {
     //    botid_is_not_empty = "$input.botid && $input.botid.trim().length > 0"
     //}
@@ -58,6 +69,8 @@ writecandle {
         pair = "$input.pair"
         period = "$input.period"
         timestamp = "$input.timestamp"
+        name = "$input.name"
+        version = "$input.version"
         jsondata = "$input.jsondata"
     }
 
@@ -68,12 +81,12 @@ writecandle {
     // include = ["_boot"]
 
     exec = <<SQL
-        IF NOT EXISTS (SELECT * FROM candles WHERE CANDLE_EXCHANGE = :exchange AND CANDLE_PAIR = :pair AND CANDLE_PERIOD = :period AND CANDLE_TYPE = :type AND CANDLE_TIMESTAMP = :timestamp)
-        INSERT [dbo].[candles] ([CANDLE_EXCHANGE], [CANDLE_TYPE], [CANDLE_PAIR], [CANDLE_PERIOD], [CANDLE_TIMESTAMP], [CANDLE_JSON]) VALUES (:exchange, :type, :pair, :period, :timestamp, :jsondata);
+        IF NOT EXISTS (SELECT * FROM indicators WHERE INDICATOR_EXCHANGE = :exchange AND INDICATOR_PAIR = :pair AND INDICATOR_PERIOD = :period AND INDICATOR_TYPE = :type AND INDICATOR_TIMESTAMP = :timestamp AND INDICATOR_NAME = :name AND INDICATOR_VERSION = :version)
+        INSERT [dbo].[indicators] ([INDICATOR_EXCHANGE], [INDICATOR_TYPE], [INDICATOR_PAIR], [INDICATOR_PERIOD], [INDICATOR_TIMESTAMP], [INDICATOR_NAME], [INDICATOR_VERSION], [INDICATOR_JSON]) VALUES (:exchange, :type, :pair, :period, :timestamp, :name, :version, :jsondata);
     	SQL
 }
 
-updatecandle {
+updateindicator {
     //validators {
     //    botid_is_not_empty = "$input.botid && $input.botid.trim().length > 0"
     //}
@@ -84,6 +97,8 @@ updatecandle {
         pair = "$input.pair"
         period = "$input.period"
         timestamp = "$input.timestamp"
+        name = "$input.name"
+        version = "$input.version"
         jsondata = "$input.jsondata"
     }
 
@@ -94,13 +109,13 @@ updatecandle {
     // include = ["_boot"]
 
     exec = <<SQL
-        IF EXISTS (SELECT * FROM candles WHERE CANDLE_EXCHANGE = :exchange AND CANDLE_PAIR = :pair AND CANDLE_PERIOD = :period AND CANDLE_TYPE = :type AND CANDLE_TIMESTAMP = :timestamp)
+        IF EXISTS (SELECT * FROM indicators WHERE INDICATOR_EXCHANGE = :exchange AND INDICATOR_PAIR = :pair AND INDICATOR_PERIOD = :period AND INDICATOR_TYPE = :type AND INDICATOR_TIMESTAMP = :timestamp AND INDICATOR_NAME = :name AND INDICATOR_VERSION = :version)
         BEGIN
-        UPDATE dbo.candles SET CANDLE_JSON = :jsondata FROM dbo.candles WHERE CANDLE_EXCHANGE = :exchange AND CANDLE_PAIR = :pair AND CANDLE_PERIOD = :period AND CANDLE_TYPE = :type AND CANDLE_TIMESTAMP = :timestamp;
+        UPDATE dbo.indicators SET INDICATOR_JSON = :jsondata FROM dbo.indicators WHERE INDICATOR_EXCHANGE = :exchange AND INDICATOR_PAIR = :pair AND INDICATOR_PERIOD = :period AND INDICATOR_TYPE = :type AND INDICATOR_TIMESTAMP = :timestamp AND INDICATOR_NAME = :name AND INDICATOR_VERSION = :version;
         END
         ELSE
         BEGIN
-        INSERT [dbo].[candles] ([CANDLE_EXCHANGE], [CANDLE_TYPE], [CANDLE_PAIR], [CANDLE_PERIOD], [CANDLE_TIMESTAMP], [CANDLE_JSON]) VALUES (:exchange, :type, :pair, :period, :timestamp, :jsondata);
+        INSERT [dbo].[indicators] ([INDICATOR_EXCHANGE], [INDICATOR_TYPE], [INDICATOR_PAIR], [INDICATOR_PERIOD], [INDICATOR_TIMESTAMP], [INDICATOR_NAME], [INDICATOR_VERSION], [INDICATOR_JSON]) VALUES (:exchange, :type, :pair, :period, :timestamp, :name, :version, :jsondata);
         END        
     	SQL
 }
