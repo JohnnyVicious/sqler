@@ -44,6 +44,7 @@ getallindicators {
         period = "$input.period"
         name = "$input.name"
         version = "$input.version"
+        limit = "$input.limit"
     }
 
     methods = ["POST"]
