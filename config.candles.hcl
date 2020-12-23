@@ -32,7 +32,6 @@ getallcandles {
         pair = "$input.pair"
         period = "$input.period"
         // climit = "$input.limit"
-        climit = 1000
     }
 
     methods = ["POST"]
@@ -43,7 +42,7 @@ getallcandles {
     // SELECT TOP :limit * FROM candles WHERE CANDLE_EXCHANGE = :exchange AND CANDLE_PAIR = :pair AND CANDLE_PERIOD = :period AND CANDLE_TYPE = :type ORDER BY CANDLE_TIMESTAMP DESC;
 
     exec = <<SQL
-          SELECT TOP :climit * FROM candles WHERE CANDLE_EXCHANGE = :exchange AND CANDLE_PAIR = :pair AND CANDLE_PERIOD = :period AND CANDLE_TYPE = :type ORDER BY CANDLE_TIMESTAMP DESC;
+          SELECT TOP 1000 * FROM candles WHERE CANDLE_EXCHANGE = :exchange AND CANDLE_PAIR = :pair AND CANDLE_PERIOD = :period AND CANDLE_TYPE = :type ORDER BY CANDLE_TIMESTAMP DESC;
     	SQL
 }
 
