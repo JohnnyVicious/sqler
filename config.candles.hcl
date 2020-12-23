@@ -31,7 +31,8 @@ getallcandles {
         type = "$input.type"
         pair = "$input.pair"
         period = "$input.period"
-        climit = "$input.limit"
+        // climit = "$input.limit"
+        climit = 1000
     }
 
     methods = ["POST"]
