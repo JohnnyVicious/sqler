@@ -87,6 +87,33 @@ writeindicator {
     	SQL
 }
 
+deleteindicator {
+    //validators {
+    //    botid_is_not_empty = "$input.botid && $input.botid.trim().length > 0"
+    //}
+
+    bind {
+        exchange = "$input.exchange"
+        type = "$input.type"
+        pair = "$input.pair"
+        period = "$input.period"
+        timestamp = "$input.timestamp"
+        name = "$input.name"
+        version = "$input.version"
+    }
+
+    methods = ["POST"]
+    //methods = ["GET"]
+
+    // include some macros we declared before
+    // include = ["_boot"]
+
+    exec = <<SQL
+        IF EXISTS (SELECT * FROM indicators WHERE INDICATOR_EXCHANGE = :exchange AND INDICATOR_PAIR = :pair AND INDICATOR_PERIOD = :period AND INDICATOR_TYPE = :type AND INDICATOR_TIMESTAMP = :timestamp AND INDICATOR_NAME = :name AND INDICATOR_VERSION = :version)
+        DELETE FROM [dbo].[indicators] WHERE INDICATOR_EXCHANGE = :exchange AND INDICATOR_PAIR = :pair AND INDICATOR_PERIOD = :period AND INDICATOR_TYPE = :type AND INDICATOR_TIMESTAMP = :timestamp AND INDICATOR_NAME = :name AND INDICATOR_VERSION = :version;
+    	SQL
+}
+
 updateindicator {
     //validators {
     //    botid_is_not_empty = "$input.botid && $input.botid.trim().length > 0"
