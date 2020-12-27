@@ -59,6 +59,7 @@ writeposition {
         pair = "$input.pair"
 		positionid = "$input.positionid"
 		enabled = "$input.enabled"
+		timestamp = "$input.timestamp"
         jsondata = "$input.jsondata"
     }
 
@@ -75,7 +76,7 @@ writeposition {
         END
         ELSE
         BEGIN
-        INSERT [dbo].[positions] ([POSITION_EXCHANGE], [POSITION_PAIR], [POSITION_ID], [POSITION_ENABLED], [POSITION_JSON]) VALUES (:exchange, :pair, :positionid, :enabled, :jsondata);
+        INSERT [dbo].[positions] ([POSITION_EXCHANGE], [POSITION_PAIR], [POSITION_ID], [POSITION_ENABLED], [POSITION_TIMESTAMP], [POSITION_JSON]) VALUES (:exchange, :pair, :positionid, :enabled, :timestamp, :jsondata);
         END
     	SQL
 }
