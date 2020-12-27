@@ -72,7 +72,7 @@ writeposition {
     exec = <<SQL
         IF EXISTS (SELECT * FROM positions WHERE POSITION_EXCHANGE = :exchange AND POSITION_PAIR = :pair AND POSITION_ID = :positionid)
         BEGIN
-        UPDATE dbo.positions SET POSITION_JSON = :jsondata FROM dbo.positions WHERE POSITION_EXCHANGE = :exchange AND POSITION_PAIR = :pair AND POSITION_ID = :positionid AND POSITION_ENABLED = :enabled;
+        UPDATE dbo.positions SET POSITION_JSON = :jsondata, POSITION_ENABLED = :enabled FROM dbo.positions WHERE POSITION_EXCHANGE = :exchange AND POSITION_PAIR = :pair AND POSITION_ID = :positionid AND POSITION_ENABLED = :enabled;
         END
         ELSE
         BEGIN
