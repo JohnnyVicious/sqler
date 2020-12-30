@@ -70,13 +70,38 @@ writeposition {
     // include = ["_boot"]
 
     exec = <<SQL
-        IF EXISTS (SELECT * FROM positions WHERE POSITION_EXCHANGE = :exchange AND POSITION_PAIR = :pair AND POSITION_ID = :positionid)
+        IF EXISTS (SELECT * FROM positions WHERE POSITION_EXCHANGE = :exchange AND POSITION_PAIR = :pair AND POSITION_ID = :positionid AND POSITION_TIMESTAMP = :timestamp)
         BEGIN
-        UPDATE dbo.positions SET POSITION_JSON = :jsondata, POSITION_ENABLED = :enabled FROM dbo.positions WHERE POSITION_EXCHANGE = :exchange AND POSITION_PAIR = :pair AND POSITION_ID = :positionid AND POSITION_ENABLED = :enabled;
+        UPDATE dbo.positions SET POSITION_JSON = :jsondata FROM dbo.positions WHERE POSITION_EXCHANGE = :exchange AND POSITION_PAIR = :pair AND POSITION_ID = :positionid AND POSITION_TIMESTAMP = :timestamp;
         END
         ELSE
         BEGIN
         INSERT [dbo].[positions] ([POSITION_EXCHANGE], [POSITION_PAIR], [POSITION_ID], [POSITION_ENABLED], [POSITION_TIMESTAMP], [POSITION_JSON]) VALUES (:exchange, :pair, :positionid, :enabled, :timestamp, :jsondata);
         END
+    	SQL
+}
+
+disableposition {
+    //validators {
+    //    botid_is_not_empty = "$input.botid && $input.botid.trim().length > 0"
+    //}
+
+    bind {
+        exchange = "$input.exchange"
+        pair = "$input.pair"
+		positionid = "$input.positionid"
+		enabled = "$input.enabled"
+		timestamp = "$input.timestamp"
+        jsondata = "$input.jsondata"
+    }
+
+    methods = ["POST"]
+    //methods = ["GET"]
+
+    // include some macros we declared before
+    // include = ["_boot"]
+
+    exec = <<SQL
+		UPDATE dbo.positions SET POSITION_JSON = :jsondata, POSITION_ENABLED = 0 FROM dbo.positions WHERE POSITION_EXCHANGE = :exchange AND POSITION_PAIR = :pair AND POSITION_ID = :positionid AND POSITION_TIMESTAMP = :timestamp;
     	SQL
 }
