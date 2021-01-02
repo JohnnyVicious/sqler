@@ -12,6 +12,7 @@ ENV CONFIG=config.*.hcl
 ENV REST=:8025
 ENV DRIVER=sqlserver
 ENV WORKERS=4
+ENV HOST=mssql
 COPY config.*.hcl /app/
 
 COPY entrypoint.sh /app/entrypoint.sh
