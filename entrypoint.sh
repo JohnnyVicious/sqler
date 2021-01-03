@@ -14,4 +14,4 @@ cp -f ./sqler/config.*.hcl /app/
 
 ls -l
 
-sqler -driver=${DRIVER} -rest=${REST} -dsn=${DSN} -config=${CONFIG} -workers=${WORKERS} -resp=${RESP}
+sqler -driver=${DRIVER} -rest=${REST} -dsn=${DSN}${HOST} -config=${CONFIG} -workers=${WORKERS} -resp=${RESP}
