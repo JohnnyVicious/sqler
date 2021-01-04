@@ -48,6 +48,28 @@ getallpositions {
     	SQL
 }
 
+getposition {
+    //validators {
+    //    botid_is_not_empty = "$input.botid && $input.botid.trim().length > 0"
+    //}
+
+    bind {
+        exchange = "$input.exchange"
+        pair = "$input.pair"
+        positionid = "$input.positionid"
+    }
+
+    methods = ["POST"]
+    //methods = ["GET"]
+
+    // include some macros we declared before
+    // include = ["_boot"]
+
+    exec = <<SQL
+          SELECT TOP 100 * FROM positions WHERE POSITION_EXCHANGE = :exchange AND POSITION_PAIR = :pair AND POSITION_ID = :positionid;
+    	SQL
+}
+
 
 writeposition {
     //validators {
