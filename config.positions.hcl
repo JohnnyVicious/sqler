@@ -35,6 +35,7 @@ getallpositions {
         exchange = "$input.exchange"
         pair = "$input.pair"
 		enabled = "$input.enabled"
+        accountid = "$input.accountid"
     }
 
     methods = ["POST"]
@@ -44,7 +45,7 @@ getallpositions {
     // include = ["_boot"]
 
     exec = <<SQL
-          SELECT TOP 100 * FROM positions WHERE POSITION_EXCHANGE = :exchange AND POSITION_PAIR = :pair AND POSITION_ENABLED = :enabled;
+          SELECT TOP 100 * FROM positions WHERE POSITION_EXCHANGE = :exchange AND POSITION_PAIR = :pair AND POSITION_ENABLED = :enabled AND POSITION_ACCOUNT = :accountid;
     	SQL
 }
 
@@ -56,6 +57,7 @@ getposition {
     bind {
         exchange = "$input.exchange"
         pair = "$input.pair"
+        accountid = "$input.accountid"
         positionid = "$input.positionid"
     }
 
@@ -66,7 +68,7 @@ getposition {
     // include = ["_boot"]
 
     exec = <<SQL
-          SELECT TOP 100 * FROM positions WHERE POSITION_EXCHANGE = :exchange AND POSITION_PAIR = :pair AND POSITION_ID = :positionid;
+          SELECT TOP 100 * FROM positions WHERE POSITION_EXCHANGE = :exchange AND POSITION_PAIR = :pair AND POSITION_ID = :positionid AND POSITION_ACCOUNT = :accountid;
     	SQL
 }
 
@@ -79,6 +81,7 @@ writeposition {
     bind {
         exchange = "$input.exchange"
         pair = "$input.pair"
+        accountid = "$input.accountid" 
 		positionid = "$input.positionid"
 		enabled = "$input.enabled"
 		timestamp = "$input.timestamp"
@@ -92,13 +95,13 @@ writeposition {
     // include = ["_boot"]
 
     exec = <<SQL
-        IF EXISTS (SELECT * FROM positions WHERE POSITION_EXCHANGE = :exchange AND POSITION_PAIR = :pair AND POSITION_ID = :positionid AND POSITION_TIMESTAMP = :timestamp)
+        IF EXISTS (SELECT * FROM positions WHERE POSITION_EXCHANGE = :exchange AND POSITION_PAIR = :pair AND POSITION_ID = :positionid AND POSITION_TIMESTAMP = :timestamp AND POSITION_ACCOUNT = :accountid)
         BEGIN
-        UPDATE dbo.positions SET POSITION_JSON = :jsondata FROM dbo.positions WHERE POSITION_EXCHANGE = :exchange AND POSITION_PAIR = :pair AND POSITION_ID = :positionid AND POSITION_TIMESTAMP = :timestamp;
+        UPDATE dbo.positions SET POSITION_JSON = :jsondata FROM dbo.positions WHERE POSITION_EXCHANGE = :exchange AND POSITION_PAIR = :pair AND POSITION_ID = :positionid AND POSITION_TIMESTAMP = :timestamp AND POSITION_ACCOUNT = :accountid;
         END
         ELSE
         BEGIN
-        INSERT [dbo].[positions] ([POSITION_EXCHANGE], [POSITION_PAIR], [POSITION_ID], [POSITION_ENABLED], [POSITION_TIMESTAMP], [POSITION_JSON]) VALUES (:exchange, :pair, :positionid, :enabled, :timestamp, :jsondata);
+        INSERT [dbo].[positions] ([POSITION_EXCHANGE], [POSITION_ACCOUNT], [POSITION_PAIR], [POSITION_ID], [POSITION_ENABLED], [POSITION_TIMESTAMP], [POSITION_JSON]) VALUES (:exchange, :accountid, :pair, :positionid, :enabled, :timestamp, :jsondata);
         END
     	SQL
 }
@@ -111,6 +114,7 @@ disableposition {
     bind {
         exchange = "$input.exchange"
         pair = "$input.pair"
+        accountid = "$input.accountid"
 		positionid = "$input.positionid"
 		enabled = "$input.enabled"
 		timestamp = "$input.timestamp"
@@ -124,6 +128,6 @@ disableposition {
     // include = ["_boot"]
 
     exec = <<SQL
-		UPDATE dbo.positions SET POSITION_JSON = :jsondata, POSITION_ENABLED = 0 FROM dbo.positions WHERE POSITION_EXCHANGE = :exchange AND POSITION_PAIR = :pair AND POSITION_ID = :positionid AND POSITION_TIMESTAMP = :timestamp;
+		UPDATE dbo.positions SET POSITION_JSON = :jsondata, POSITION_ENABLED = 0 FROM dbo.positions WHERE POSITION_EXCHANGE = :exchange AND POSITION_PAIR = :pair AND POSITION_ID = :positionid AND POSITION_TIMESTAMP = :timestamp POSITION_ACCOUNT = :accountid;
     	SQL
 }
