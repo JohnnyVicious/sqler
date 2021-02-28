@@ -128,6 +128,6 @@ disableposition {
     // include = ["_boot"]
 
     exec = <<SQL
-		UPDATE dbo.positions SET POSITION_JSON = :jsondata, POSITION_ENABLED = 0 FROM dbo.positions WHERE POSITION_EXCHANGE = :exchange AND POSITION_PAIR = :pair AND POSITION_ID = :positionid AND POSITION_TIMESTAMP = :timestamp POSITION_ACCOUNT = :accountid;
+		UPDATE dbo.positions SET POSITION_JSON = :jsondata, POSITION_ENABLED = 0 FROM dbo.positions WHERE POSITION_EXCHANGE = :exchange AND POSITION_PAIR = :pair AND POSITION_ID = :positionid AND POSITION_TIMESTAMP = :timestamp AND POSITION_ACCOUNT = :accountid;
     	SQL
 }
